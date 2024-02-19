@@ -2,8 +2,11 @@
 
 import {useEffect, useRef} from "react";
 import {gsap} from "gsap";
+import {Location} from "rickmortyapi";
 
-export default function LeftPane(){
+export default function LeftPane({locations}: {
+    locations: Location[]
+}){
     const leftPane= useRef(null)
 
     useEffect(() => {
@@ -45,14 +48,13 @@ export default function LeftPane(){
             </div>
             <div className="flex flex-col divide-y overflow-y-scroll inner-scroller">
                 {
-                    Array.from(Array(12).keys()).map((location) => {
+                    locations.map((location) => {
                         return (
-                            <div key={location}
+                            <div key={location.id}
                                  className="group flex justify-between items-center py-4 cursor-pointer">
                                 <div className="flex flex-col">
-                                    <p className="font-semibold group-hover:text-primary transition ease-in-out">Citadel
-                                        of Ricks</p>
-                                    <p className="text-xs opacity-50">Space Station</p>
+                                    <p className="font-semibold group-hover:text-primary transition ease-in-out">{location.name}</p>
+                                    <p className="text-xs opacity-50">{location.type}</p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      strokeWidth={1.5} stroke="currentColor"

@@ -1,8 +1,11 @@
 import Image from "next/image";
 import LeftPane from "@/app/components/LeftPane";
 import Link from "next/link";
+import {getLocations} from "rickmortyapi";
 
-export default function Home() {
+export default async function Home() {
+    const locations = await getLocations({ page: 2 })
+    console.log(locations);
 
     return (
         <main className="h-screen">
@@ -14,7 +17,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="h-screen container grid grid-cols-3">
-                <LeftPane/>
+                <LeftPane locations={locations.data.results || []}/>
                 <div className="col-span-2 py-8 px-6 flex flex-col gap-y-6">
                     <div className="flex justify-between">
                         <p className="font-medium opacity-70 text-sm">Residents:</p>
@@ -39,14 +42,19 @@ export default function Home() {
                             Array.from(Array(25).keys()).map((character: any) => {
                                 return (
                                     <Link href={'/character/1'} className="flex flex-col group" key={character}>
-                                        <div className="bg-white drop-shadow-lg p-1 rounded-lg group-hover:scale-105 cursor-pointer transition ease-in-out">
-                                            <div className="h-[180px] 2xl:h-[200px] w-full relative rounded-lg overflow-hidden">
+                                        <div
+                                            className="bg-white drop-shadow-lg p-1 rounded-lg group-hover:scale-105 cursor-pointer transition ease-in-out">
+                                            <div
+                                                className="h-[180px] 2xl:h-[200px] w-full relative rounded-lg overflow-hidden">
                                                 <Image src={'https://rickandmortyapi.com/api/character/avatar/38.jpeg'}
-                                                       alt={character.name} fill className="object-cover object-center"/>
-                                                <span className="badge green absolute bottom-2 right-2 text-sm">Alive</span>
+                                                       alt={character.name} fill
+                                                       className="object-cover object-center"/>
+                                                <span
+                                                    className="badge green absolute bottom-2 right-2 text-sm">Alive</span>
                                             </div>
                                         </div>
-                                        <span className="font-semibold text-sm text-center pt-2 group-hover:text-primary">Rick Morty</span>
+                                        <span
+                                            className="font-semibold text-sm text-center pt-2 group-hover:text-primary">Rick Morty</span>
                                     </Link>
                                 )
                             })
