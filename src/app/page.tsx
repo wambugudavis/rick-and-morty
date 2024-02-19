@@ -39,6 +39,27 @@ export default function Home() {
                             })
                         }
                     </div>
+                    <div className="py-4 flex justify-center">
+                        <div className="pagination flex items-center justify-center rounded-l-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                        </div>
+                        {
+                            Array.from(Array(3).keys()).map((page) => {
+                                return (
+                                    <div className="pagination" key={page}>
+                                        <span className="font-medium text-sm">{page}</span>
+                                    </div>
+                                )
+                            })
+                        }
+                        <div className="pagination flex items-center justify-center rounded-r-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>

@@ -27,3 +27,9 @@
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .pagination{
+    @apply border py-3 px-5 cursor-pointer hover:text-primary hover:border-primary hover:bg-primary/[0.1] transition ease-in-out
+  }
+}
