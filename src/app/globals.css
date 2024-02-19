@@ -20,6 +20,10 @@
     outline: 1px solid;
     @apply bg-white border-2 outline-slate-200 -ml-3
   }
+
+  input:focus{
+    @apply border-primary
+  }
 }
 
 @layer utilities {
