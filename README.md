@@ -16,7 +16,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - [Tailwind]()
 - [Typescript]()
+
+### Additional Plugins
 - [GSAP (GreenSock Animation Platform)](https://www.npmjs.com/package/gsap)
+- [The Rick and Morty API JavaScript client](https://javascript.rickandmortyapi.com/)
 
 
 ---
