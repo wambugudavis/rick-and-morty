@@ -3,27 +3,24 @@ import Image from "next/image";
 export default function Home() {
     return (
         <main className="h-screen">
-            <div className="h-1/3 flex items-center  bg-accent-1">
-                <div className="container grid grid-cols-2 ">
+            <div className="h-40 flex items-center bg-accent-1">
+                <div className="container">
                     <div className="h-24 my-auto relative">
                         <Image src={'logo.svg'} alt={'Logo'} fill className="object-contain"/>
-                    </div>
-                    <div>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem, beatae consequuntur
-                        eius eveniet fuga hic illo ipsa iste molestiae, odit, quasi sint soluta tempore vel voluptate
-                        voluptates voluptatum. Iure.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem, beatae consequuntur
-                        eius eveniet fuga hic illo ipsa iste molestiae, odit, quasi sint soluta tempore vel voluptate
-                        voluptates voluptatum. Iure.
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem, beatae consequuntur
-                        eius eveniet fuga hic illo ipsa iste molestiae, odit, quasi sint soluta tempore vel voluptate
-                        voluptates voluptatum. Iure.
                     </div>
                 </div>
             </div>
             <div className="h-screen container grid grid-cols-3">
                 <div className="py-8 border-r flex flex-col gap-y-6 overflow-y-scroll inner-scroller">
                     <p className="font-medium opacity-70 text-sm">Locations:</p>
+                    <div className="mr-6">
+                        <input
+                            type="search"
+                            placeholder="Find a location"
+                            className="appearance-none outline-none border rounded py-2 px-3 w-full"
+                        />
+                        <span className="opacity-50 text-xs">Showing 1-10 of 56</span>
+                    </div>
                     <div className="flex flex-col divide-y">
                         {
                             Array.from(Array(10).keys()).map((location) => {
