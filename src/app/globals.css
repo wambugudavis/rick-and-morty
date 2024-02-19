@@ -32,4 +32,28 @@
   .pagination{
     @apply border py-3 px-5 cursor-pointer hover:text-primary hover:border-primary hover:bg-primary/[0.1] transition ease-in-out
   }
+
+  .badge{
+    @apply border rounded px-2 py-1
+  }
+
+  .badge.green{
+    @apply text-accent-2 font-medium border-accent-2 bg-accent-2/[0.2]
+  }
+
+  .badge.red{
+    @apply text-accent-3 font-medium border-accent-3 bg-accent-3/[0.2]
+  }
+
+  .badge.gray{
+    @apply text-accent-4 font-medium border-accent-4 bg-accent-4/[0.2]
+  }
+
+  .tab{
+    @apply border-b px-8 flex items-center text-slate-500 font-medium transition ease-in-out
+  }
+
+  .tab.active{
+    @apply border-primary text-primary bg-primary/[0.1]
+  }
 }

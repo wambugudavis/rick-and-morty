@@ -18,7 +18,10 @@ const config: Config = {
       },
       colors: {
         'primary': '#11B0C8',
-        'accent-1': '#F8FAFC'
+        'accent-1': '#F8FAFC',
+        'accent-2':'#a2d55c',
+        'accent-3':'#de4e4e',
+        'accent-4':'#A4A4A4'
       },
     },
   },
