@@ -16,6 +16,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - [Tailwind]()
 - [Typescript]()
+- [GSAP (GreenSock Animation Platform)](https://www.npmjs.com/package/gsap)
 
 
 ---
