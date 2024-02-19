@@ -34,7 +34,11 @@
 
 @layer components {
   .pagination{
-    @apply border py-3 px-5 cursor-pointer hover:text-primary hover:border-primary hover:bg-primary/[0.1] transition ease-in-out
+    @apply select-none border py-3 px-5 cursor-pointer hover:text-primary hover:border-primary hover:bg-primary/[0.1] transition ease-in-out
+  }
+
+  .pagination.active{
+    @apply text-primary border-primary bg-primary/[0.1] hover:bg-primary/[0.2]
   }
 
   .badge{

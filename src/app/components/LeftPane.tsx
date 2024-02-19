@@ -1,13 +1,20 @@
 'use client'
 
-import {useEffect, useRef} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {gsap} from "gsap";
 import {Location} from "rickmortyapi";
+import {LocationInfo} from "@/app/types";
+import {usePathname, useSearchParams, useRouter} from "next/navigation";
 
-export default function LeftPane({locations}: {
-    locations: Location[]
-}){
-    const leftPane= useRef(null)
+export default function LeftPane({locations, info, page, updatePage}: {
+    locations: Location[],
+    info: LocationInfo,
+    page: number,
+    updatePage: Function
+}) {
+    const leftPane = useRef<any>(null)
+    const locationList = useRef<any>(null)
+    const [pages, setPages] = useState<any[]>([])
 
     useEffect(() => {
         let ctx = gsap.context(() => {
@@ -28,6 +35,27 @@ export default function LeftPane({locations}: {
         return () => ctx.revert();
     }, [])
 
+    useEffect(() => {
+        const prevPage = page > 1 ? page - 1 : null
+        const nextPage = page < info.pages ? page + 1 : null
+
+        if (nextPage == null && prevPage == null) {
+            setPages([page])
+        } else if (prevPage == null && nextPage && nextPage < info.pages) {
+            setPages([page, nextPage, nextPage + 1])
+        } else if (nextPage == null && prevPage && prevPage > 1) {
+            setPages([prevPage - 1, prevPage, page])
+        } else {
+            setPages([prevPage, page, nextPage])
+        }
+    }, [info.pages, page])
+
+    useEffect(() => {
+        if (locationList.current) {
+            locationList.current.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    }, [page])
+
     return (
         <div ref={leftPane} className="h-screen py-8 border-r flex flex-col gap-y-6">
             <p className="font-medium opacity-70 text-sm">Locations:</p>
@@ -37,7 +65,7 @@ export default function LeftPane({locations}: {
                     placeholder="Find a location"
                     className="appearance-none outline-none border rounded py-2 px-3 w-full"
                 />
-                <span className="opacity-50 text-xs absolute left-1 -bottom-5">Showing 1-10 of 56</span>
+                <span className="opacity-50 text-xs absolute left-1 -bottom-5">Showing 1-10 of {info.count}</span>
                 <div className="absolute right-0 top-0 flex items-center h-full pr-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-4 h-4 text-slate-400">
@@ -46,7 +74,7 @@ export default function LeftPane({locations}: {
                     </svg>
                 </div>
             </div>
-            <div className="flex flex-col divide-y overflow-y-scroll inner-scroller">
+            <div ref={locationList} className="flex flex-col divide-y overflow-y-scroll inner-scroller">
                 {
                     locations.map((location) => {
                         return (
@@ -69,22 +97,38 @@ export default function LeftPane({locations}: {
                 }
             </div>
             <div className="py-4 flex justify-center">
-                <div className="pagination flex items-center justify-center rounded-l-lg">
+                <div
+                    className={`pagination flex items-center justify-center rounded-l-lg ${page === 1 ? 'pointer-events-none opacity-50' : 'pointer-events-auto'}`}
+                    onClick={() => {
+                        if (page !== 1) {
+                            updatePage(page - 1)
+                        }
+                    }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/>
                     </svg>
                 </div>
                 {
-                    Array.from(Array(3).keys()).map((page) => {
+                    pages.map((currentPage) => {
                         return (
-                            <div className="pagination" key={page}>
-                                <span className="font-medium text-sm">{page}</span>
+                            <div className={`pagination ${currentPage === page ? 'active' : ''}`}
+                                 key={currentPage}
+                                 onClick={() => {
+                                     updatePage(currentPage)
+                                 }}>
+                                <span className="font-medium text-sm">{currentPage}</span>
                             </div>
                         )
                     })
                 }
-                <div className="pagination flex items-center justify-center rounded-r-lg">
+                <div
+                    className={`pagination flex items-center justify-center rounded-r-lg ${page === info.pages ? 'pointer-events-none opacity-50' : 'pointer-events-auto'}`}
+                    onClick={() => {
+                        if (page !== info.pages) {
+                            updatePage(page + 1)
+                        }
+                    }}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-4 h-4">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
