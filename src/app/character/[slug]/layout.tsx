@@ -1,6 +1,5 @@
 'use client'
 
-import {Metadata} from "next";
 import Link from "next/link";
 import Image from "next/image";
 import TabsHeader from "@/app/components/TabsHeader";
@@ -40,8 +39,10 @@ export default function CharacterLayout({children,}: Readonly<{
                             </Link>
                             <div className="py-6 pr-12">
                                 <div className="h-[40vh] w-full relative rounded-lg overflow-hidden">
-                                    <Image src={character.image}
-                                           alt={''} fill className="object-cover object-center"/>
+                                    {character.image &&
+                                        <Image src={character.image}
+                                               alt={''} fill className="object-cover object-center"/>
+                                    }
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
