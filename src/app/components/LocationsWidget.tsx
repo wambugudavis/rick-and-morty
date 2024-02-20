@@ -9,6 +9,7 @@ import {LocationInfo} from "@/app/types";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import CharacterList from "@/app/components/CharacterList";
 import {gsap} from "gsap";
+import {useDebouncedCallback} from "use-debounce";
 
 export default function LocationsWidget({
                                             locations, info = {
@@ -58,6 +59,16 @@ export default function LocationsWidget({
         return () => ctx.revert();
     }, [location])
 
+    const handleSearch = useDebouncedCallback((term) => {
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set('resident', term);
+        } else {
+            params.delete('resident');
+        }
+        router.replace(`${pathname}?${params.toString()}`);
+    }, 300);
+
     return (
         <div className="h-screen container grid grid-cols-3">
             <div ref={leftPane}>
@@ -72,11 +83,15 @@ export default function LocationsWidget({
                         <input
                             type="search"
                             placeholder="Find a resident"
-                            className="appearance-none outline-none border rounded py-2 px-3 w-full"
+                            className="appearance-none outline-none border rounded py-2 pr-3 pl-10 w-full"
+                            onChange={(e) => {
+                                handleSearch(e.target.value);
+                            }}
+                            defaultValue={searchParams.get('resident')?.toString()}
                         />
                         <span
                             className="opacity-50 text-xs absolute right-0 -bottom-5">Filter by resident&apos;s name</span>
-                        <div className="absolute right-0 top-0 flex items-center h-full pr-4">
+                        <div className="absolute left-0 top-0 flex items-center h-full pl-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-slate-400">
                                 <path strokeLinecap="round" strokeLinejoin="round"
