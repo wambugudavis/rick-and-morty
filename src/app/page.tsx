@@ -19,7 +19,7 @@ export default async function Home({searchParams,}: {
             <div className="h-40 flex items-center bg-accent-1">
                 <div className="container">
                     <div className="h-24 my-auto relative">
-                        <Image src={'logo.svg'} alt={'Logo'} fill className="object-contain"/>
+                        <Image src={'logo.svg'} alt={'Logo'} fill sizes="100vw" className="object-contain"/>
                     </div>
                 </div>
             </div>

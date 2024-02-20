@@ -49,7 +49,9 @@ export default function CharacterList({characters}: {
                                     <div
                                         className="h-[180px] 2xl:h-[200px] w-full relative rounded-lg overflow-hidden">
                                         <Image src={character.image}
-                                               alt={character.name} fill
+                                               alt={character.name}
+                                               fill
+                                               sizes="100vw"
                                                className="object-cover object-center"/>
                                         <div className="absolute top-2 right-2">
                                             {

@@ -53,8 +53,8 @@ export default function LeftPane({locations, activeLocation, info, page, updateP
 
     return (
         <div className="h-screen py-8 border-r flex flex-col gap-y-6">
-            <p className="font-medium opacity-70 text-sm">Locations:</p>
-            <div className="mr-6 relative">
+            <p className="font-medium opacity-70 text-sm pl-4">Locations:</p>
+            <div className="mr-6 relative ml-4">
                 <input
                     type="search"
                     placeholder="Find a location"
@@ -84,7 +84,7 @@ export default function LeftPane({locations, activeLocation, info, page, updateP
                                  }
                                  }
                             >
-                                <div className="flex flex-col">
+                                <div className="flex flex-col pl-4">
                                     <p className="font-semibold group-hover:text-primary transition ease-in-out">{location.name}</p>
                                     <p className="text-xs opacity-50">{location.type}</p>
                                 </div>

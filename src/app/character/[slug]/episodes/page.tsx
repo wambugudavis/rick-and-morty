@@ -54,7 +54,7 @@ export default function CharacterEpisodesPage() {
                     }}
                     defaultValue={searchParams.get('episode')?.toString()}
                 />
-                <span className="opacity-50 text-xs absolute right-0 -bottom-5">Find by episode name</span>
+                <span className="opacity-50 text-xs absolute right-0 -bottom-5">Filter by episode name</span>
                 <div className="absolute right-0 top-0 flex items-center h-full pr-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-slate-400">
