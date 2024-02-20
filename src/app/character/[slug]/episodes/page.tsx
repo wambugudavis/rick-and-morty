@@ -1,13 +1,16 @@
 'use client'
 
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useEffect, useState} from "react";
 import {Episode} from "rickmortyapi";
+import {useDebouncedCallback} from "use-debounce";
 
 export default function CharacterEpisodesPage() {
 
     const [episodes, setEpisodes] = useState<Episode[]>([])
     const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const {replace} = useRouter();
 
     useEffect(() => {
         const id = pathname.split('/')[2]
@@ -29,6 +32,16 @@ export default function CharacterEpisodesPage() {
             })
     }, [])
 
+    const handleSearch = useDebouncedCallback((term) => {
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set('episode', term);
+        } else {
+            params.delete('episode');
+        }
+        replace(`${pathname}?${params.toString()}`);
+    }, 300);
+
     return (
         <div className="flex flex-col">
             <div className="text-right relative">
@@ -36,6 +49,10 @@ export default function CharacterEpisodesPage() {
                     type="search"
                     placeholder="Find an episode"
                     className="appearance-none outline-none border rounded py-2 px-3 w-full"
+                    onChange={(e) => {
+                        handleSearch(e.target.value);
+                    }}
+                    defaultValue={searchParams.get('episode')?.toString()}
                 />
                 <span className="opacity-50 text-xs absolute right-0 -bottom-5">Find by episode name</span>
                 <div className="absolute right-0 top-0 flex items-center h-full pr-4">
@@ -48,7 +65,12 @@ export default function CharacterEpisodesPage() {
             </div>
             <div className="flex flex-col gap-3 py-12 divide-y">
                 {
-                    episodes.map((episode) => {
+                    episodes
+                        .filter((episode) => {
+                            const term = searchParams.get('episode')?.toString().toLowerCase()
+                            return term === undefined ? episode : episode.name.toLowerCase().includes(term || '');
+                        })
+                        .map((episode) => {
                         return (
                             <div key={episode.id} className="pt-4">
                                 <div className="grid grid-cols-3">
