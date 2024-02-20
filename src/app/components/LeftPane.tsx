@@ -6,34 +6,16 @@ import {Location} from "rickmortyapi";
 import {LocationInfo} from "@/app/types";
 import {usePathname, useSearchParams, useRouter} from "next/navigation";
 
-export default function LeftPane({locations, info, page, updatePage}: {
+export default function LeftPane({locations, activeLocation, info, page, updatePage, setLocation}: {
     locations: Location[],
+    activeLocation: Location,
     info: LocationInfo,
     page: number,
     updatePage: Function
+    setLocation: Function
 }) {
-    const leftPane = useRef<any>(null)
     const locationList = useRef<any>(null)
     const [pages, setPages] = useState<any[]>([])
-
-    useEffect(() => {
-        let ctx = gsap.context(() => {
-            if (leftPane.current) {
-                gsap.to(leftPane.current, {
-                    scrollTrigger: {
-                        trigger: leftPane.current,
-                        id: 'p1',
-                        // markers: true,
-                        scrub: 1,
-                        start: 'top top',
-                        pin: true,
-                        pinSpacing: false
-                    }
-                })
-            }
-        });
-        return () => ctx.revert();
-    }, [])
 
     useEffect(() => {
         const prevPage = page > 1 ? page - 1 : null
@@ -57,7 +39,7 @@ export default function LeftPane({locations, info, page, updatePage}: {
     }, [page])
 
     return (
-        <div ref={leftPane} className="h-screen py-8 border-r flex flex-col gap-y-6">
+        <div className="h-screen py-8 border-r flex flex-col gap-y-6">
             <p className="font-medium opacity-70 text-sm">Locations:</p>
             <div className="mr-6 relative">
                 <input
@@ -79,7 +61,12 @@ export default function LeftPane({locations, info, page, updatePage}: {
                     locations.map((location) => {
                         return (
                             <div key={location.id}
-                                 className="group flex justify-between items-center py-4 cursor-pointer">
+                                 className={`group flex justify-between items-center py-4 cursor-pointer ${location.id === activeLocation.id ? 'text-primary' : ''}`}
+                                 onClick={() => {
+                                     setLocation(location)
+                                 }
+                                 }
+                            >
                                 <div className="flex flex-col">
                                     <p className="font-semibold group-hover:text-primary transition ease-in-out">{location.name}</p>
                                     <p className="text-xs opacity-50">{location.type}</p>

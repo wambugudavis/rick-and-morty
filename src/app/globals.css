@@ -42,19 +42,19 @@
   }
 
   .badge{
-    @apply border rounded px-2 py-1
+    @apply rounded px-2 py-1 text-xs font-medium capitalize drop-shadow
   }
 
   .badge.green{
-    @apply text-accent-2 font-medium border-accent-2 bg-accent-2/[0.2]
+    @apply bg-green-100 text-green-600
   }
 
   .badge.red{
-    @apply text-accent-3 font-medium border-accent-3 bg-accent-3/[0.2]
+    @apply  bg-red-100 text-red-600
   }
 
   .badge.gray{
-    @apply text-accent-4 font-medium border-accent-4 bg-accent-4/[0.2]
+    @apply  bg-slate-100 text-slate-600
   }
 
   .tab{

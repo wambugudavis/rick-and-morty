@@ -1,12 +1,14 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import LeftPane from "@/app/components/LeftPane";
 import Link from "next/link";
 import Image from "next/image";
 import {Location} from "rickmortyapi";
 import {LocationInfo} from "@/app/types";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import CharacterList from "@/app/components/CharacterList";
+import {gsap} from "gsap";
 
 export default function LocationsWidget({
                                             locations, info = {
@@ -22,9 +24,12 @@ export default function LocationsWidget({
 }) {
 
     const [newPage, setNewPage] = useState(page)
+    const [location, setLocation] = useState<Location>(locations[0])
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const router = useRouter();
+    const leftPane = useRef<any>(null)
+    const rightPane = useRef<any>(null)
 
     useEffect(() => {
         const params = new URLSearchParams(searchParams);
@@ -32,12 +37,35 @@ export default function LocationsWidget({
         router.push(`${pathname}?${params.toString()}`, {scroll: false});
     }, [newPage])
 
+    useEffect(() => {
+        let ctx = gsap.context(() => {
+            if (leftPane.current) {
+                gsap.to(leftPane.current, {
+                    scrollTrigger: {
+                        trigger: leftPane.current,
+                        id: 'p1',
+                        // markers: true,
+                        anticipatePin: 1,
+                        scrub: 1,
+                        start: 'top top',
+                        end: "+=" + rightPane.current.offsetHeight,
+                        pin: true,
+                        pinSpacing: false
+                    }
+                })
+            }
+        });
+        return () => ctx.revert();
+    }, [location])
+
     return (
         <div className="h-screen container grid grid-cols-3">
-            <LeftPane locations={locations} info={info} page={newPage} updatePage={setNewPage}/>
-            <div className="col-span-2 py-8 px-6 flex flex-col gap-y-6">
+            <div ref={leftPane}>
+                <LeftPane locations={locations} info={info} page={newPage} updatePage={setNewPage} setLocation={setLocation} activeLocation={location}/>
+            </div>
+            <div ref={rightPane} className="bg-slate-100 col-span-2 py-8 px-6 flex flex-col gap-y-6">
                 <div className="flex justify-between">
-                    <p className="font-medium opacity-70 text-sm">Residents:</p>
+                    <p className="font-medium opacity-70 text-sm">{location.name} Residents:</p>
                     <div className="text-right relative">
                         <input
                             type="search"
@@ -45,7 +73,7 @@ export default function LocationsWidget({
                             className="appearance-none outline-none border rounded py-2 px-3 w-full"
                         />
                         <span
-                            className="opacity-50 text-xs absolute right-0 -bottom-5">Showing characters at location</span>
+                            className="opacity-50 text-xs absolute right-0 -bottom-5">Filter by resident&apos;s name</span>
                         <div className="absolute right-0 top-0 flex items-center h-full pr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-slate-400">
@@ -55,29 +83,7 @@ export default function LocationsWidget({
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-cols-5 gap-6 py-6">
-                    {
-                        Array.from(Array(25).keys()).map((character: any) => {
-                            return (
-                                <Link href={'/character/1'} className="flex flex-col group" key={character}>
-                                    <div
-                                        className="bg-white drop-shadow-lg p-1 rounded-lg group-hover:scale-105 cursor-pointer transition ease-in-out">
-                                        <div
-                                            className="h-[180px] 2xl:h-[200px] w-full relative rounded-lg overflow-hidden">
-                                            <Image src={'https://rickandmortyapi.com/api/character/avatar/38.jpeg'}
-                                                   alt={character.name} fill
-                                                   className="object-cover object-center"/>
-                                            <span
-                                                className="badge green absolute bottom-2 right-2 text-sm">Alive</span>
-                                        </div>
-                                    </div>
-                                    <span
-                                        className="font-semibold text-sm text-center pt-2 group-hover:text-primary">Rick Morty</span>
-                                </Link>
-                            )
-                        })
-                    }
-                </div>
+                <CharacterList characters={location.residents}/>
             </div>
         </div>
     )
