@@ -4,13 +4,14 @@ import LocationsWidget from "@/app/components/LocationsWidget";
 
 export default async function Home({searchParams,}: {
     searchParams?: {
-        query?: string
+        location?: string
         page?: string
     }
 }) {
     const page = Number(searchParams?.page) || 1
     const locations = await getLocations({
-        page
+        page,
+        name: searchParams?.location || ''
     })
 
     return (

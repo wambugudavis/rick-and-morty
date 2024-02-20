@@ -3,6 +3,8 @@
 import {useEffect, useRef, useState} from "react";
 import {Location} from "rickmortyapi";
 import {LocationInfo} from "@/app/types";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function LeftPane({locations, activeLocation, info, page, updatePage, setLocation}: {
     locations: Location[],
@@ -14,6 +16,9 @@ export default function LeftPane({locations, activeLocation, info, page, updateP
 }) {
     const locationList = useRef<any>(null)
     const [pages, setPages] = useState<any[]>([])
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const {replace} = useRouter();
 
     useEffect(() => {
         const prevPage = page > 1 ? page - 1 : null
@@ -36,6 +41,18 @@ export default function LeftPane({locations, activeLocation, info, page, updateP
         }
     }, [page])
 
+    const handleSearch = useDebouncedCallback((term) => {
+        console.log(`Searching... ${term}`);
+
+        const params = new URLSearchParams(searchParams);
+        if (term) {
+            params.set('location', term);
+        } else {
+            params.delete('location');
+        }
+        replace(`${pathname}?${params.toString()}`);
+    }, 300);
+
     return (
         <div className="h-screen py-8 border-r flex flex-col gap-y-6">
             <p className="font-medium opacity-70 text-sm">Locations:</p>
@@ -43,10 +60,14 @@ export default function LeftPane({locations, activeLocation, info, page, updateP
                 <input
                     type="search"
                     placeholder="Find a location"
-                    className="appearance-none outline-none border rounded py-2 px-3 w-full"
+                    className="appearance-none outline-none border rounded py-2 pr-3 pl-10 w-full"
+                    onChange={(e) => {
+                        handleSearch(e.target.value);
+                    }}
+                    defaultValue={searchParams.get('location')?.toString()}
                 />
                 <span className="opacity-50 text-xs absolute left-1 -bottom-5">Showing 1-10 of {info.count}</span>
-                <div className="absolute right-0 top-0 flex items-center h-full pr-4">
+                <div className="absolute left-0 top-0 flex items-center h-full pl-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                          stroke="currentColor" className="w-4 h-4 text-slate-400">
                         <path strokeLinecap="round" strokeLinejoin="round"

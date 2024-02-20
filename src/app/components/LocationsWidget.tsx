@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useRef, useState} from "react";
+import {Suspense, useEffect, useRef, useState} from "react";
 import LeftPane from "@/app/components/LeftPane";
 import Link from "next/link";
 import Image from "next/image";
@@ -65,7 +65,9 @@ export default function LocationsWidget({
             </div>
             <div ref={rightPane} className="col-span-2 py-8 px-6 flex flex-col gap-y-6">
                 <div className="flex justify-between">
-                    <p className="font-medium opacity-70 text-sm">{location.name} Residents:</p>
+                    {
+                        location && <p className="font-medium opacity-70 text-sm">{location.name} Residents:</p>
+                    }
                     <div className="text-right relative">
                         <input
                             type="search"
@@ -83,7 +85,12 @@ export default function LocationsWidget({
                         </div>
                     </div>
                 </div>
-                <CharacterList characters={location.residents}/>
+                {
+                    location &&
+                    <Suspense key={pathname}>
+                        <CharacterList characters={location.residents}/>
+                    </Suspense>
+                }
             </div>
         </div>
     )
