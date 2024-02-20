@@ -7,6 +7,8 @@ You can preview the project [here](https://rick-and-morty-ten-delta.vercel.app/)
 
 The specifications provided for building this project were translated into custom UI designs available on this 
 [Figma file](https://www.figma.com/file/istTLla66eM1Iu2qRYU8Zp/Rick-and-Morty%3A-Assessment?type=design&node-id=0%3A1&mode=design&t=PJhMgJPENIn7iifU-1). 
+
+
 Designing user interfaces helps clarify the project's functional requirements and identify any potential gaps or 
 ambiguities in the requirements early in the development process. UI designs also help ensure the project is implemented
 while prioritizing the needs and preferences of the end-users. 
