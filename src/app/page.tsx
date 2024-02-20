@@ -12,7 +12,7 @@ export default async function Home({searchParams,}: {
     const locations = await getLocations({
         page
     })
-    console.log(locations);
+
     return (
         <main className="h-screen">
             <div className="h-40 flex items-center bg-accent-1">

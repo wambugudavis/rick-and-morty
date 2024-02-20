@@ -1,10 +1,8 @@
 'use client'
 
-import {useCallback, useEffect, useRef, useState} from "react";
-import {gsap} from "gsap";
+import {useEffect, useRef, useState} from "react";
 import {Location} from "rickmortyapi";
 import {LocationInfo} from "@/app/types";
-import {usePathname, useSearchParams, useRouter} from "next/navigation";
 
 export default function LeftPane({locations, activeLocation, info, page, updatePage, setLocation}: {
     locations: Location[],
