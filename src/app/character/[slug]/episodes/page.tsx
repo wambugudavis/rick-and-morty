@@ -1,4 +1,33 @@
+'use client'
+
+import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
+import {Episode} from "rickmortyapi";
+
 export default function CharacterEpisodesPage() {
+
+    const [episodes, setEpisodes] = useState<Episode[]>([])
+    const pathname = usePathname();
+
+    useEffect(() => {
+        const id = pathname.split('/')[2]
+        fetch('https://rickandmortyapi.com/api/character/' + id)
+            .then(response => response.json())
+            .then(data => {
+                const ids = data.episode.map((url: string) => {
+                    return Number(url.replace('https://rickandmortyapi.com/api/episode/', ''))
+                })
+                fetch('https://rickandmortyapi.com/api/episode/' + ids.join(','))
+                    .then(response => response.json())
+                    .then(data => {
+                        if (ids.length > 1) {
+                            setEpisodes(data)
+                        } else {
+                            setEpisodes([data])
+                        }
+                    })
+            })
+    }, [])
 
     return (
         <div className="flex flex-col">
@@ -19,15 +48,15 @@ export default function CharacterEpisodesPage() {
             </div>
             <div className="flex flex-col gap-3 py-12 divide-y">
                 {
-                    Array.from(Array(16).keys()).map((episode) => {
+                    episodes.map((episode) => {
                         return (
-                            <div key={episode} className="py-2">
+                            <div key={episode.id} className="pt-4">
                                 <div className="grid grid-cols-3">
-                                    <div className="opacity-50 font-semibold">S01E10</div>
-                                    <div className="flex flex-col col-span-2">
-                                        <p className="font-semibold">Close Rick-counters of the Rick Kind</p>
-                                        <p className="text-primary text-xs">April 7, 2014</p>
+                                    <div className="flex flex-col">
+                                        <p className="opacity-80 font-semibold text-sm">{episode.episode}</p>
+                                        <p className="text-primary text-xs">{episode.air_date}</p>
                                     </div>
+                                    <div className="font-semibold col-span-2">{episode.name}</div>
                                 </div>
                             </div>
                         )

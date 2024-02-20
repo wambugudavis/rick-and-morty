@@ -63,7 +63,7 @@ export default function LocationsWidget({
             <div ref={leftPane}>
                 <LeftPane locations={locations} info={info} page={newPage} updatePage={setNewPage} setLocation={setLocation} activeLocation={location}/>
             </div>
-            <div ref={rightPane} className="bg-slate-100 col-span-2 py-8 px-6 flex flex-col gap-y-6">
+            <div ref={rightPane} className="col-span-2 py-8 px-6 flex flex-col gap-y-6">
                 <div className="flex justify-between">
                     <p className="font-medium opacity-70 text-sm">{location.name} Residents:</p>
                     <div className="text-right relative">
